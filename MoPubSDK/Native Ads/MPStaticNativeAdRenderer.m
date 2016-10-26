@@ -64,6 +64,11 @@ const CGFloat MPNativeViewDynamicDimension = -1.0;
     return self;
 }
 
+/// From Johnkui: https://github.com/Johnkui/mopub-ios-sdk.git
+- (void)setRenderingView:(UIView<MPNativeAdRendering> *)renderingView {
+    self.adView = renderingView;
+}
+
 - (UIView *)retrieveViewWithAdapter:(id<MPNativeAdAdapter>)adapter error:(NSError **)error
 {
     if (!adapter) {
@@ -76,12 +81,14 @@ const CGFloat MPNativeViewDynamicDimension = -1.0;
 
     self.adapter = adapter;
 
-    if ([self.renderingViewClass respondsToSelector:@selector(nibForAd)]) {
-        self.adView = (UIView<MPNativeAdRendering> *)[[[self.renderingViewClass nibForAd] instantiateWithOwner:nil options:nil] firstObject];
-    } else {
-        self.adView = [[self.renderingViewClass alloc] init];
+    if (_adView == nil) { /// From Johnkui: https://github.com/Johnkui/mopub-ios-sdk.git
+        if ([self.renderingViewClass respondsToSelector:@selector(nibForAd)]) {
+            self.adView = (UIView<MPNativeAdRendering> *)[[[self.renderingViewClass nibForAd] instantiateWithOwner:nil options:nil] firstObject];
+        } else {
+            self.adView = [[self.renderingViewClass alloc] init];
+        }
     }
-
+    
     self.adView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
     // We only load text here. We delay loading of images until the view is added to the view hierarchy

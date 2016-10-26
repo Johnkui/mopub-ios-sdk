@@ -6,6 +6,7 @@
 #import "MPNativeAd.h"
 
 @class MPNativeView;
+@protocol MPNativeAdRenderer;
 
 @interface MPNativeAd (Internal)
 

@@ -40,6 +40,8 @@
 
 @property (nonatomic) BOOL hasAttachedToView;
 
+@property (nonatomic, weak) UIView *containerView;
+@property (nonatomic, strong)UITapGestureRecognizer *containerViewRecognizer;
 @end
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,6 +97,34 @@
         return self.associatedView;
     } else {
         return nil;
+    }
+}
+
+/// From Johnkui: https://github.com/Johnkui/mopub-ios-sdk.git
+- (void)removeGestureRecognizerFromContainerView {
+    [self.containerView removeGestureRecognizer:self.containerViewRecognizer];
+}
+
+/// From Johnkui: https://github.com/Johnkui/mopub-ios-sdk.git
+- (void)setAdView:(UIView<MPNativeAdRendering> *) adView containerView:(UIView *)containerView error:(NSError **)error
+{
+    self.containerView = containerView;
+    
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(adViewTapped)];
+    [self.containerView addGestureRecognizer:recognizer];
+    self.containerViewRecognizer = recognizer;
+    
+    [self.renderer setRenderingView:adView];
+    
+    UIView *renderedAdView = [self.renderer retrieveViewWithAdapter:self.adAdapter error:error];
+    if (renderedAdView) {
+        if (!self.hasAttachedToView) {
+            [self willAttachToView:self.containerView];
+            self.hasAttachedToView = YES;
+        }
+        
+//        adView.frame = self.associatedView.bounds;
+//        [self.associatedView addSubview:adView];
     }
 }
 

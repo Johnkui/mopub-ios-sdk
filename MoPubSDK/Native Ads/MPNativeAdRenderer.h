@@ -10,6 +10,7 @@
 
 @protocol MPNativeAdAdapter;
 @protocol MPNativeAdRendererSettings;
+@protocol MPNativeAdRendering;
 @class MPNativeAdRendererConfiguration;
 
 /**
@@ -102,5 +103,8 @@ typedef CGSize (^MPNativeViewSizeHandler)(CGFloat maximumWidth);
  *
  */
 - (void)nativeAdTapped;
+
+/// From Johnkui: https://github.com/Johnkui/mopub-ios-sdk.git
+- (void)setRenderingView:(UIView<MPNativeAdRendering> *)renderingView;
 
 @end

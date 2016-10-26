@@ -8,7 +8,7 @@
 
 @protocol MPNativeAdAdapter;
 @protocol MPNativeAdDelegate;
-@protocol MPNativeAdRenderer;
+@protocol MPNativeAdRendering;
 @class MPAdConfiguration;
 
 /**
@@ -47,5 +47,11 @@
 - (UIView *)retrieveAdViewWithError:(NSError **)error;
 
 - (void)trackMetricForURL:(NSURL *)URL;
+
+/// From Johnkui: https://github.com/Johnkui/mopub-ios-sdk.git
+- (void)removeGestureRecognizerFromContainerView;
+
+/// From Johnkui: https://github.com/Johnkui/mopub-ios-sdk.git
+- (void)setAdView:(UIView<MPNativeAdRendering> *) adView containerView:(UIView *)containerView error:(NSError **)error;
 
 @end

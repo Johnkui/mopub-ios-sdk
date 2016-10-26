@@ -79,6 +79,11 @@ static const CGFloat kAutoPlayTimerInterval = 0.25f;
     [[MOPUBPlayerManager sharedInstance] disposePlayerViewController];
 }
 
+/// From Johnkui: https://github.com/Johnkui/mopub-ios-sdk.git
+- (void)setRenderingView:(UIView<MPNativeAdRendering> *)renderingView {
+    self.adView = renderingView;
+}
+
 - (UIView *)retrieveViewWithAdapter:(MOPUBNativeVideoAdAdapter<MPNativeAdAdapter> *)adapter error:(NSError **)error
 {
     if (!adapter) {
@@ -304,10 +309,12 @@ static const CGFloat kAutoPlayTimerInterval = 0.25f;
 - (void)initAdView
 {
     if (!self.videoController) {
-        if ([self.renderingViewClass respondsToSelector:@selector(nibForAd)]) {
-            self.adView = (UIView<MPNativeAdRendering> *)[[[self.renderingViewClass nibForAd] instantiateWithOwner:nil options:nil] firstObject];
-        } else {
-            self.adView = [[self.renderingViewClass alloc] init];
+        if (_adView == nil) { /// From Johnkui: https://github.com/Johnkui/mopub-ios-sdk.git
+            if ([self.renderingViewClass respondsToSelector:@selector(nibForAd)]) {
+                self.adView = (UIView<MPNativeAdRendering> *)[[[self.renderingViewClass nibForAd] instantiateWithOwner:nil options:nil] firstObject];
+            } else {
+                self.adView = [[self.renderingViewClass alloc] init];
+            }
         }
     }
 }
