@@ -123,6 +123,7 @@
             self.hasAttachedToView = YES;
         }
         
+        [self nativeViewWillMoveToSuperview:self.containerView];
 //        adView.frame = self.associatedView.bounds;
 //        [self.associatedView addSubview:adView];
     }
