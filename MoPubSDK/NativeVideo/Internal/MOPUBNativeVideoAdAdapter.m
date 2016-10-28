@@ -22,12 +22,15 @@
 @implementation MOPUBNativeVideoAdAdapter
 
 @synthesize properties = _properties;
+@synthesize originalProperties = _originalProperties;
 @synthesize defaultActionURL = _defaultActionURL;
 
 - (instancetype)initWithAdProperties:(NSMutableDictionary *)properties
 {
     if (self = [super init]) {
 
+        _originalProperties = [properties copy];
+        
         // Let's make sure the data types of all the provided native ad properties are strings before creating the adapter.
 
         NSArray *keysToCheck = @[kAdIconImageKey, kAdMainImageKey, kAdTextKey, kAdTitleKey, kAdCTATextKey, kVASTVideoKey];

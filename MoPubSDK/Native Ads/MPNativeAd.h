@@ -31,6 +31,12 @@
  */
 @property (nonatomic, readonly) NSDictionary *properties;
 
+/// From Johnkui: https://github.com/Johnkui/mopub-ios-sdk.git
+/**
+ * A dictionary representing the native ad adapter properties.
+ */
+@property (nonatomic, readonly) NSDictionary *originalProperties;
+
 - (instancetype)initWithAdAdapter:(id<MPNativeAdAdapter>)adAdapter;
 
 /** @name Retrieving Ad View */

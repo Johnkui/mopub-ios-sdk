@@ -97,6 +97,18 @@
  */
 @property (nonatomic, readonly) NSDictionary *properties;
 
+/** @name Ad Resources */
+
+/// From Johnkui: https://github.com/Johnkui/mopub-ios-sdk.git
+/**
+ * Provides a dictionary of all publicly accessible assets (such as title and text) for the
+ * native ad.
+ *
+ * When possible, you should place values in the returned dictionary such that they correspond to
+ * the pre-defined keys in the MPNativeAdConstants header file.
+ */
+@property (nonatomic, readonly) NSDictionary *originalProperties;
+
 /**
  * The default click-through URL for the ad.
  *

@@ -134,6 +134,10 @@
     return self.adAdapter.properties;
 }
 
+- (NSDictionary *)originalProperties {
+    return self.adAdapter.originalProperties;
+}
+
 - (void)trackImpression
 {
     if (self.hasTrackedImpression) {

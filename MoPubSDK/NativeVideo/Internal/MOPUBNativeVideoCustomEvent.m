@@ -16,12 +16,19 @@
 #import "MPVideoConfig.h"
 #import "MPVASTManager.h"
 #import "MPNativeAd+Internal.h"
+#import "MPLogEvent.h"
 
 @implementation MOPUBNativeVideoCustomEvent
 
 - (void)handleSuccessfulVastParsing:(MPVASTResponse *)mpVastResponse info:(NSDictionary *)info
 {
     NSMutableDictionary *infoMutableCopy = [info mutableCopy];
+    
+    /// From Johnkui: https://github.com/Johnkui/mopub-ios-sdk.git
+    MPAdConfigurationLogEventProperties *logEventProperties = [info objectForKey:kLogEventRequestPropertiesKey];
+    [infoMutableCopy setObject:[NSNumber numberWithFloat:logEventProperties.adSize.width] forKey:kVideoWidthKey];
+    [infoMutableCopy setObject:[NSNumber numberWithFloat:logEventProperties.adSize.height] forKey:kVideoHeightKey];
+    
     [infoMutableCopy setObject:[[MPVideoConfig alloc] initWithVASTResponse:mpVastResponse] forKey:kVideoConfigKey];
     MOPUBNativeVideoAdAdapter *adAdapter = [[MOPUBNativeVideoAdAdapter alloc] initWithAdProperties:infoMutableCopy];
     if (adAdapter.properties) {
