@@ -47,12 +47,13 @@
 @end
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-static int sequenceNumber = 0;
 
 @implementation MPNativeAd
 
 - (instancetype)initWithAdAdapter:(id<MPNativeAdAdapter>)adAdapter
 {
+    static int sequenceNumber = 0;
+
     self = [super init];
     if (self) {
         _adAdapter = adAdapter;
@@ -78,7 +79,9 @@ static int sequenceNumber = 0;
 
 /// From Johnkui: https://github.com/Johnkui/mopub-ios-sdk.git
 - (instancetype)initWithAdAdapter:(id<MPNativeAdAdapter>)adAdapter addLinks:(BOOL)add {
-    
+
+    static int sequenceNumber = 0;
+
     self = [super init];
     if (self) {
         _adAdapter = adAdapter;
