@@ -73,6 +73,16 @@
             UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(adViewTapped)];
             [_associatedView addGestureRecognizer:recognizer];
         }
+        
+        if ([adAdapter isKindOfClass:[MOPUBNativeVideoAdAdapter class]]) {
+            MOPUBNativeVideoAdAdapter *videoAdapter = (MOPUBNativeVideoAdAdapter *)adAdapter;
+            [_impressionTrackerURLs addObjectsFromArray:videoAdapter.impressionTrackerURLs];
+            [_clickTrackerURLs addObjectsFromArray:videoAdapter.clickTrackerURLs];
+        } else if ([adAdapter isKindOfClass:[MPMoPubNativeAdAdapter class]]) {
+            MPMoPubNativeAdAdapter *nativeAdapter = (MPMoPubNativeAdAdapter *)adAdapter;
+            [_impressionTrackerURLs addObjectsFromArray:nativeAdapter.impressionTrackerURLs];
+            [_clickTrackerURLs addObjectsFromArray:nativeAdapter.clickTrackerURLs];
+        }
     }
     return self;
 }
