@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MOPUBNativeVideoAdConfigValues : NSObject
+@interface MOPUBNativeVideoAdConfigValues : NSObject<NSCoding>
 
 @property (nonatomic, readonly) NSInteger playVisiblePercent;
 @property (nonatomic, readonly) NSInteger pauseVisiblePercent;

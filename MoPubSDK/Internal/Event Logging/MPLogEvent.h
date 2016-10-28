@@ -42,7 +42,7 @@ extern NSString *const MPLogEventCategoryAdInteractions;
  * Convenience struct class for keeping track of the log event properties
  * that are parsed off the MPAdConfiguration.
  */
-@interface MPAdConfigurationLogEventProperties : NSObject
+@interface MPAdConfigurationLogEventProperties : NSObject<NSCoding>
 
 @property (nonatomic, copy) NSString *adType;
 @property (nonatomic, copy) NSString *adCreativeId;

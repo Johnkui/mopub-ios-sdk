@@ -52,6 +52,32 @@ NSString * const MPLogEventCategoryAdInteractions = @"ad_interactions";
     return self;
 }
 
+/// johnkui:
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super init]) {
+        self.adType = [aDecoder decodeObjectForKey:@"adType"];
+        self.adCreativeId = [aDecoder decodeObjectForKey:@"adCreativeId"];
+        self.dspCreativeId = [aDecoder decodeObjectForKey:@"dspCreativeId"];
+        self.adNetworkType = [aDecoder decodeObjectForKey:@"adNetworkType"];
+        self.adSize = [[aDecoder decodeObjectForKey:@"adSize"] CGSizeValue];
+        self.requestId = [aDecoder decodeObjectForKey:@"requestId"];
+        self.adUnitId = [aDecoder decodeObjectForKey:@"adUnitId"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.adType forKey:@"adType"];
+    [aCoder encodeObject:self.adCreativeId forKey:@"adCreativeId"];
+    [aCoder encodeObject:self.dspCreativeId forKey:@"dspCreativeId"];
+    [aCoder encodeObject:self.adNetworkType forKey:@"adNetworkType"];
+    [aCoder encodeObject:[NSValue valueWithCGSize:self.adSize] forKey:@"adSize"];
+    [aCoder encodeObject:self.requestId forKey:@"requestId"];
+    [aCoder encodeObject:self.adUnitId forKey:@"adUnitId"];
+}
+
 @end
 
 
