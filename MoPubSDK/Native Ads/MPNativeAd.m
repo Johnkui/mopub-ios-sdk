@@ -19,6 +19,8 @@
 #import "MPNativeAdRenderer.h"
 #import "MPNativeAdDelegate.h"
 #import "MPNativeView.h"
+#import "MOPUBNativeVideoAdAdapter.h"
+#import "MPMoPubNativeAdAdapter.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -45,13 +47,12 @@
 @end
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+static int sequenceNumber = 0;
 
 @implementation MPNativeAd
 
 - (instancetype)initWithAdAdapter:(id<MPNativeAdAdapter>)adAdapter
 {
-    static int sequenceNumber = 0;
-
     self = [super init];
     if (self) {
         _adAdapter = adAdapter;
@@ -74,6 +75,46 @@
     }
     return self;
 }
+
+/// From Johnkui: https://github.com/Johnkui/mopub-ios-sdk.git
+- (instancetype)initWithAdAdapter:(id<MPNativeAdAdapter>)adAdapter addLinks:(BOOL)add {
+    
+    self = [super init];
+    if (self) {
+        _adAdapter = adAdapter;
+        if ([_adAdapter respondsToSelector:@selector(setDelegate:)]) {
+            [_adAdapter setDelegate:self];
+        }
+        _adIdentifier = [[NSString stringWithFormat:@"%d", sequenceNumber++] copy];
+        _impressionTrackerURLs = [[NSMutableSet alloc] init];
+        _clickTrackerURLs = [[NSMutableSet alloc] init];
+        _creationDate = [NSDate date];
+        _associatedView = [[MPNativeView alloc] init];
+        _associatedView.clipsToBounds = YES;
+        _associatedView.delegate = self;
+        
+        // Add a tap recognizer on top of the view if the ad network isn't handling clicks on its own.
+        if (!([_adAdapter respondsToSelector:@selector(enableThirdPartyClickTracking)] && [_adAdapter enableThirdPartyClickTracking])) {
+            UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(adViewTapped)];
+            [_associatedView addGestureRecognizer:recognizer];
+        }
+        
+        if (add && ([adAdapter isKindOfClass:[MOPUBNativeVideoAdAdapter class]] ||
+                    [adAdapter isKindOfClass:[MPMoPubNativeAdAdapter class]])) {
+            if ([adAdapter isKindOfClass:[MOPUBNativeVideoAdAdapter class]]) {
+                MOPUBNativeVideoAdAdapter *videoAdapter = (MOPUBNativeVideoAdAdapter *)adAdapter;
+                [_impressionTrackerURLs addObjectsFromArray:videoAdapter.impressionTrackerURLs];
+                [_clickTrackerURLs addObjectsFromArray:videoAdapter.clickTrackerURLs];
+            } else if ([adAdapter isKindOfClass:[MPMoPubNativeAdAdapter class]]) {
+                MPMoPubNativeAdAdapter *nativeAdapter = (MPMoPubNativeAdAdapter *)adAdapter;
+                [_impressionTrackerURLs addObjectsFromArray:nativeAdapter.impressionTrackerURLs];
+                [_clickTrackerURLs addObjectsFromArray:nativeAdapter.clickTrackerURLs];
+            }
+        }
+    }
+    return self;
+}
+
 
 #pragma mark - Public
 

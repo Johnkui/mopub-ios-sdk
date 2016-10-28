@@ -54,6 +54,10 @@
 
 - (void)trackMetricForURL:(NSURL *)URL;
 
+
+/// From Johnkui: https://github.com/Johnkui/mopub-ios-sdk.git
+- (instancetype)initWithAdAdapter:(id<MPNativeAdAdapter>)adAdapter addLinks:(BOOL)add;
+
 /// From Johnkui: https://github.com/Johnkui/mopub-ios-sdk.git
 - (void)removeGestureRecognizerFromContainerView;
 
