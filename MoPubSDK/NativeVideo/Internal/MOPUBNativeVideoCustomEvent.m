@@ -24,11 +24,6 @@
 {
     NSMutableDictionary *infoMutableCopy = [info mutableCopy];
     
-    /// From Johnkui: https://github.com/Johnkui/mopub-ios-sdk.git
-    MPAdConfigurationLogEventProperties *logEventProperties = [info objectForKey:kLogEventRequestPropertiesKey];
-    [infoMutableCopy setObject:[NSNumber numberWithFloat:logEventProperties.adSize.width] forKey:kVideoWidthKey];
-    [infoMutableCopy setObject:[NSNumber numberWithFloat:logEventProperties.adSize.height] forKey:kVideoHeightKey];
-    
     [infoMutableCopy setObject:[[MPVideoConfig alloc] initWithVASTResponse:mpVastResponse] forKey:kVideoConfigKey];
     MOPUBNativeVideoAdAdapter *adAdapter = [[MOPUBNativeVideoAdAdapter alloc] initWithAdProperties:infoMutableCopy];
     if (adAdapter.properties) {
