@@ -19,7 +19,7 @@
     MPMoPubNativeAdAdapter *adAdapter = [[MPMoPubNativeAdAdapter alloc] initWithAdProperties:[info mutableCopy]];
 
     if (adAdapter.properties) {
-        MPNativeAd *interfaceAd = [[MPNativeAd alloc] initWithAdAdapter:adAdapter];
+        MPNativeAd *interfaceAd = [[MPNativeAd alloc] initWithAdAdapter:adAdapter offline:NO];
         [interfaceAd.impressionTrackerURLs addObjectsFromArray:adAdapter.impressionTrackerURLs];
         [interfaceAd.clickTrackerURLs addObjectsFromArray:adAdapter.clickTrackerURLs];
 

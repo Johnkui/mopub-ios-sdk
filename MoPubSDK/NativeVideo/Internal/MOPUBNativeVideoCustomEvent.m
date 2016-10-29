@@ -27,7 +27,7 @@
     [infoMutableCopy setObject:[[MPVideoConfig alloc] initWithVASTResponse:mpVastResponse] forKey:kVideoConfigKey];
     MOPUBNativeVideoAdAdapter *adAdapter = [[MOPUBNativeVideoAdAdapter alloc] initWithAdProperties:infoMutableCopy];
     if (adAdapter.properties) {
-        MPNativeAd *interfaceAd = [[MPNativeAd alloc] initWithAdAdapter:adAdapter];
+        MPNativeAd *interfaceAd = [[MPNativeAd alloc] initWithAdAdapter:adAdapter offline:NO];
         [interfaceAd.impressionTrackerURLs addObjectsFromArray:adAdapter.impressionTrackerURLs];
         [interfaceAd.clickTrackerURLs addObjectsFromArray:adAdapter.clickTrackerURLs];
         // Get the image urls so we can download them prior to returning the ad.

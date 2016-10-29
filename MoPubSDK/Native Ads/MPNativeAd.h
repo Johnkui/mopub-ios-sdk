@@ -37,7 +37,7 @@
  */
 @property (nonatomic, readonly) NSDictionary *originalProperties;
 
-- (instancetype)initWithAdAdapter:(id<MPNativeAdAdapter>)adAdapter;
+- (instancetype)initWithAdAdapter:(id<MPNativeAdAdapter>)adAdapter offline:(BOOL)offline;
 
 /** @name Retrieving Ad View */
 

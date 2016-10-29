@@ -27,7 +27,7 @@
 
 static const CGFloat kAutoPlayTimerInterval = 0.25f;
 
-@interface MOPUBNativeVideoAdRenderer () <MPNativeAdRenderer, MOPUBPlayerViewControllerDelegate, MOPUBFullscreenPlayerViewControllerDelegate, MPNativeAdRendererImageHandlerDelegate>
+@interface MOPUBNativeVideoAdRenderer () <MOPUBPlayerViewControllerDelegate, MOPUBFullscreenPlayerViewControllerDelegate, MPNativeAdRendererImageHandlerDelegate>
 
 @property (nonatomic) UIView<MPNativeAdRendering> *adView;
 @property (nonatomic) MOPUBNativeVideoAdAdapter<MPNativeAdAdapter> *adapter;

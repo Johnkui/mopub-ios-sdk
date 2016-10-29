@@ -21,6 +21,10 @@
 #import "MPNativeView.h"
 #import "MOPUBNativeVideoAdAdapter.h"
 #import "MPMoPubNativeAdAdapter.h"
+#import "MPStaticNativeAdRendererSettings.h"
+#import "MPStaticNativeAdRenderer.h"
+#import "MOPUBNativeVideoAdRenderer.h"
+#import "MOPUBNativeVideoAdRendererSettings.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -50,7 +54,7 @@
 
 @implementation MPNativeAd
 
-- (instancetype)initWithAdAdapter:(id<MPNativeAdAdapter>)adAdapter
+- (instancetype)initWithAdAdapter:(id<MPNativeAdAdapter>)adAdapter offline:(BOOL)offline
 {
     static int sequenceNumber = 0;
 
@@ -74,14 +78,23 @@
             [_associatedView addGestureRecognizer:recognizer];
         }
         
-        if ([adAdapter isKindOfClass:[MOPUBNativeVideoAdAdapter class]]) {
-            MOPUBNativeVideoAdAdapter *videoAdapter = (MOPUBNativeVideoAdAdapter *)adAdapter;
-            [_impressionTrackerURLs addObjectsFromArray:videoAdapter.impressionTrackerURLs];
-            [_clickTrackerURLs addObjectsFromArray:videoAdapter.clickTrackerURLs];
-        } else if ([adAdapter isKindOfClass:[MPMoPubNativeAdAdapter class]]) {
-            MPMoPubNativeAdAdapter *nativeAdapter = (MPMoPubNativeAdAdapter *)adAdapter;
-            [_impressionTrackerURLs addObjectsFromArray:nativeAdapter.impressionTrackerURLs];
-            [_clickTrackerURLs addObjectsFromArray:nativeAdapter.clickTrackerURLs];
+        if (offline) { /// Johnkui
+            if ([adAdapter isKindOfClass:[MOPUBNativeVideoAdAdapter class]]) {
+                MOPUBNativeVideoAdAdapter *videoAdapter = (MOPUBNativeVideoAdAdapter *)adAdapter;
+                [_impressionTrackerURLs addObjectsFromArray:videoAdapter.impressionTrackerURLs];
+                [_clickTrackerURLs addObjectsFromArray:videoAdapter.clickTrackerURLs];
+                
+                MPStaticNativeAdRendererSettings *staticSettings = [[MPStaticNativeAdRendererSettings alloc] init];
+                _renderer =[[MPStaticNativeAdRenderer alloc] initWithRendererSettings:staticSettings];
+
+            } else if ([adAdapter isKindOfClass:[MPMoPubNativeAdAdapter class]]) {
+                MPMoPubNativeAdAdapter *nativeAdapter = (MPMoPubNativeAdAdapter *)adAdapter;
+                [_impressionTrackerURLs addObjectsFromArray:nativeAdapter.impressionTrackerURLs];
+                [_clickTrackerURLs addObjectsFromArray:nativeAdapter.clickTrackerURLs];
+                
+                MOPUBNativeVideoAdRendererSettings *videoSettings = [[MOPUBNativeVideoAdRendererSettings alloc] init];
+                _renderer =[[MOPUBNativeVideoAdRenderer alloc] initWithRendererSettings:videoSettings];
+            }
         }
     }
     return self;
