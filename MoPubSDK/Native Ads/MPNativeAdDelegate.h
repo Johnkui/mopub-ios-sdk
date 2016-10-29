@@ -15,6 +15,21 @@
 
 @optional
 
+/// Johnkui
+/**
+ * Sent when the native ad will log impression.
+ *
+ * @param nativeAd The native ad sending the message.
+ */
+- (void)nativeAdWillLogImpression:(MPNativeAd *)nativeAd;
+
+/**
+ * Sent when the native ad did click.
+ *
+ * @param nativeAd The native ad sending the message.
+ */
+- (void)nativeAdDidClick:(MPNativeAd *)nativeAd;
+
 /**
  * Sent when the native ad will present its modal content.
  *

@@ -48,6 +48,7 @@
 
 @property (nonatomic, weak) UIView *containerView;
 @property (nonatomic, strong)UITapGestureRecognizer *containerViewRecognizer;
+@property (nonatomic, assign)BOOL offline;
 @end
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,22 +79,23 @@
             [_associatedView addGestureRecognizer:recognizer];
         }
         
+        _offline = offline;
         if (offline) { /// Johnkui
             if ([adAdapter isKindOfClass:[MOPUBNativeVideoAdAdapter class]]) {
                 MOPUBNativeVideoAdAdapter *videoAdapter = (MOPUBNativeVideoAdAdapter *)adAdapter;
                 [_impressionTrackerURLs addObjectsFromArray:videoAdapter.impressionTrackerURLs];
                 [_clickTrackerURLs addObjectsFromArray:videoAdapter.clickTrackerURLs];
                 
-                MPStaticNativeAdRendererSettings *staticSettings = [[MPStaticNativeAdRendererSettings alloc] init];
-                _renderer =[[MPStaticNativeAdRenderer alloc] initWithRendererSettings:staticSettings];
+                MOPUBNativeVideoAdRendererSettings *videoSettings = [[MOPUBNativeVideoAdRendererSettings alloc] init];
+                _renderer =[[MOPUBNativeVideoAdRenderer alloc] initWithRendererSettings:videoSettings];
 
             } else if ([adAdapter isKindOfClass:[MPMoPubNativeAdAdapter class]]) {
                 MPMoPubNativeAdAdapter *nativeAdapter = (MPMoPubNativeAdAdapter *)adAdapter;
                 [_impressionTrackerURLs addObjectsFromArray:nativeAdapter.impressionTrackerURLs];
                 [_clickTrackerURLs addObjectsFromArray:nativeAdapter.clickTrackerURLs];
                 
-                MOPUBNativeVideoAdRendererSettings *videoSettings = [[MOPUBNativeVideoAdRendererSettings alloc] init];
-                _renderer =[[MOPUBNativeVideoAdRenderer alloc] initWithRendererSettings:videoSettings];
+                MPStaticNativeAdRendererSettings *staticSettings = [[MPStaticNativeAdRendererSettings alloc] init];
+                _renderer =[[MPStaticNativeAdRenderer alloc] initWithRendererSettings:staticSettings];
             }
         }
     }
@@ -214,6 +216,12 @@
 
     MPLogDebug(@"Tracking an impression for %@.", self.adIdentifier);
     self.hasTrackedImpression = YES;
+
+    ///Johnkui:
+    if ([self.delegate respondsToSelector:@selector(nativeAdWillLogImpression:)]) {
+        [self.delegate nativeAdWillLogImpression:self];
+    }
+    
     [self trackMetricsForURLs:self.impressionTrackerURLs];
 }
 
@@ -228,6 +236,11 @@
     self.hasTrackedClick = YES;
     [self trackMetricsForURLs:self.clickTrackerURLs];
 
+    ///Johnkui:
+    if ([self.delegate respondsToSelector:@selector(nativeAdDidClick:)]) {
+        [self.delegate nativeAdDidClick:self];
+    }
+    
     if ([self.adAdapter respondsToSelector:@selector(trackClick)] && ![self isThirdPartyHandlingClicks]) {
         [self.adAdapter trackClick];
     }
@@ -267,7 +280,9 @@
     [self trackClick];
 
     if ([self.adAdapter respondsToSelector:@selector(displayContentForURL:rootViewController:)]) {
-        [self.adAdapter displayContentForURL:self.adAdapter.defaultActionURL rootViewController:[self.delegate viewControllerForPresentingModalView]];
+        if (!self.offline) { /// johnkui: offline ad click event should self deal
+            [self.adAdapter displayContentForURL:self.adAdapter.defaultActionURL rootViewController:[self.delegate viewControllerForPresentingModalView]];
+        }
     } else {
         // If this method is called, that means that the backing adapter should implement -displayContentForURL:rootViewController:completion:.
         // If it doesn't, we'll log a warning.
