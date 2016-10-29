@@ -280,9 +280,7 @@
     [self trackClick];
 
     if ([self.adAdapter respondsToSelector:@selector(displayContentForURL:rootViewController:)]) {
-        if (!self.offline) { /// johnkui: offline ad click event should self deal
-            [self.adAdapter displayContentForURL:self.adAdapter.defaultActionURL rootViewController:[self.delegate viewControllerForPresentingModalView]];
-        }
+        [self.adAdapter displayContentForURL:self.adAdapter.defaultActionURL rootViewController:[self.delegate viewControllerForPresentingModalView]];
     } else {
         // If this method is called, that means that the backing adapter should implement -displayContentForURL:rootViewController:completion:.
         // If it doesn't, we'll log a warning.
