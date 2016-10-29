@@ -51,7 +51,13 @@ static void exponentialDecayInterpolation(void *info, const CGFloat *input, CGFl
 
 - (id)initWithFrame:(CGRect)frame
 {
-    self = [super initWithFrame:frame];
+    /// johnkui:
+    CGRect overlayViewFrame = frame;
+    if (CGRectEqualToRect(frame, CGRectZero)) {
+        overlayViewFrame = [UIScreen mainScreen].bounds;
+    }
+    
+    self = [super initWithFrame:overlayViewFrame];
     if (self) {
         self.alpha = 0.0;
         self.opaque = NO;
