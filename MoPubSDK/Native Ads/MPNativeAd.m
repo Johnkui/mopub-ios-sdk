@@ -218,8 +218,8 @@
     self.hasTrackedImpression = YES;
 
     ///Johnkui:
-    if ([self.delegate respondsToSelector:@selector(nativeAdWillLogImpression:)]) {
-        [self.delegate nativeAdWillLogImpression:self];
+    if ([self.delegate respondsToSelector:@selector(nativeMopubAdWillLogImpression:)]) {
+        [self.delegate nativeMopubAdWillLogImpression:self];
     }
     
     [self trackMetricsForURLs:self.impressionTrackerURLs];
@@ -237,8 +237,8 @@
     [self trackMetricsForURLs:self.clickTrackerURLs];
 
     ///Johnkui:
-    if ([self.delegate respondsToSelector:@selector(nativeAdDidClick:)]) {
-        [self.delegate nativeAdDidClick:self];
+    if ([self.delegate respondsToSelector:@selector(nativeMopubAdDidClick:)]) {
+        [self.delegate nativeMopubAdDidClick:self];
     }
     
     if ([self.adAdapter respondsToSelector:@selector(trackClick)] && ![self isThirdPartyHandlingClicks]) {

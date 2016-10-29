@@ -21,14 +21,14 @@
  *
  * @param nativeAd The native ad sending the message.
  */
-- (void)nativeAdWillLogImpression:(MPNativeAd *)nativeAd;
+- (void)nativeMopubAdWillLogImpression:(MPNativeAd *)nativeAd;
 
 /**
  * Sent when the native ad did click.
  *
  * @param nativeAd The native ad sending the message.
  */
-- (void)nativeAdDidClick:(MPNativeAd *)nativeAd;
+- (void)nativeMopubAdDidClick:(MPNativeAd *)nativeAd;
 
 /**
  * Sent when the native ad will present its modal content.
